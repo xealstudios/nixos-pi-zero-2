@@ -20,7 +20,7 @@
       };
     };
 
-    sdImage-zero2w       = self.nixosConfigurations.zero2w.config.system.build.sdImage;
+    sdImage-zero2w = self.nixosConfigurations.zero2w.config.system.build.sdImage;
     
     deploy = {
       user = "root";

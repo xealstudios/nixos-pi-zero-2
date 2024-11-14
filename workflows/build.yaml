@@ -1,0 +1,27 @@
+name: Build
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build_sd_image:
+    runs-on: arm_linux_8_core
+    timeout-minutes: 20
+    if: ${{ success() }} 
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: DeterminateSystems/flake-checker-action@main
+      - name: Build nix image
+        run: nix build .#sdImage-zero2w
+      - uses: actions/upload-artifact@v4
+        with:
+          name: xsite-sd-image
+          path: ./result/sd-image/zero2.img

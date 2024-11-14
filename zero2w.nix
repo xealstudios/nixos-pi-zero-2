@@ -51,7 +51,12 @@
 
   boot = {
     kernelPackages = pkgs.linuxPackages_rpi02w;
-
+    kernelParams = [
+      "earlycon" # enable writing to uart serial console early in boot process
+      "boot.shell_on_fail"
+      "8250.nr_uarts=1" # configure mini uart https://forums.raspberrypi.com/viewtopic.php?t=246215
+      "console=ttyS0,115200n8" #set console to output to uart1 (miniuart)
+    ];
     initrd.availableKernelModules = ["xhci_pci" "usbhid" "usb_storage"];
     loader = {
       grub.enable = false;

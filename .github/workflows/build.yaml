@@ -9,7 +9,7 @@ env:
 jobs:
   build_sd_image:
     runs-on: arm_linux_8_core
-    timeout-minutes: 20
+    timeout-minutes: 120
     if: ${{ success() }} 
     steps:
       - name: Git checkout

@@ -6,6 +6,7 @@
 }: {
   imports = [
     ./sd-image.nix
+    ./modules/network/otg.nix
   ];
 
   # Some packages (ahci fail... this bypasses that) https://discourse.nixos.org/t/does-pkgs-linuxpackages-rpi3-build-all-required-kernel-modules/42509
@@ -61,6 +62,12 @@
     loader = {
       grub.enable = false;
       generic-extlinux-compatible.enable = true;
+    };
+
+    # enable otg usb ethernet
+    otg = {
+      enable = true;
+      module = "ether";
     };
 
     # Avoids warning: mdadm: Neither MAILADDR nor PROGRAM has been set. This will cause the `mdmon` service to crash.

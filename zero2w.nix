@@ -153,8 +153,8 @@
   # ! Change the following configuration
   users.users.bob = {
     isNormalUser = true;
-    home = "/home/bob";
-    description = "Bob";
+    home = "/home/admin";
+    description = "Admin";
     extraGroups = ["wheel" "networkmanager"];
     # ! Be sure to put your own public key here
     openssh.authorizedKeys.keys = ["a public key"];
@@ -165,7 +165,7 @@
     wheelNeedsPassword = false;
   };
   # ! Be sure to change the autologinUser.
-  services.getty.autologinUser = "bob";
+  services.getty.autologinUser = "admin";
 
   # disable zfs and cifs to prevent samba error when cross-compiling
   boot.supportedFilesystems.zfs = lib.mkForce false;

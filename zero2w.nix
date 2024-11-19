@@ -93,28 +93,56 @@
   #     };
   #   };
   # };
-  
-  # enable OTG Ethernet
-  networking.dhcpcd.denyInterfaces = [ "usb0" ];
 
-  services.dhcpd4 = {
-    enable = true;
-    interfaces = [ "usb0" ];
-    extraConfig = ''
-      option domain-name "nixos";
-      option domain-name-servers 8.8.8.8, 8.8.4.4;
-      subnet 10.0.3.0 netmask 255.255.255.0 {
-        range 10.0.3.100 10.0.3.200;
-        option subnet-mask 255.255.255.0;
-        option broadcast-address 10.0.3.255;
-      }
-    '';
+  # enable USB Ethernet  https://wiki.nixos.org/wiki/Internet_Connection_Sharing
+  networking.interfaces."usb0" = {
+    useDHCP = false;
+    ipv4.addresses = [{
+      address = "10.0.0.1";
+      prefixLength = 24;
+    }];
   };
+  # networking.firewall.extraCommands = ''
+  #   # Set up SNAT on packets going from downstream to the wider internet
+  #   iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE
 
-  networking.interfaces.usb0.ipv4.addresses = [{
-    address = "10.0.3.1";
-    prefixLength = 24;
-  }];
+  #   # Accept all connections from downstream. May not be necessary
+  #   iptables -A INPUT -i enp2s0 -j ACCEPT
+  # '';
+  # # Run a DHCP server on the downstream interface
+  # services.kea.dhcp4 = {
+  #   enable = true;
+  #   settings = {
+  #     interfaces-config = {
+  #       interfaces = [
+  #         "usb0"
+  #       ];
+  #     };
+  #     lease-database = {
+  #       name = "/var/lib/kea/dhcp4.leases";
+  #       persist = true;
+  #       type = "memfile";
+  #     };
+  #     rebind-timer = 2000;
+  #     renew-timer = 1000;
+  #     subnet4 = [
+  #       {
+  #         id = 1;
+  #         pools = [
+  #           {
+  #             pool = "10.0.0.2 - 10.0.0.255";
+  #           }
+  #         ];
+  #         subnet = "10.0.0.1/24";
+  #       }
+  #     ];
+  #     valid-lifetime = 4000;
+  #     option-data = [{
+  #       name = "routers";
+  #       data = "10.0.0.1";
+  #     }];
+  #   };
+  # };
 
   # Enable OpenSSH out of the box.
   services.sshd.enable = true;

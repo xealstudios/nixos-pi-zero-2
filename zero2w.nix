@@ -58,7 +58,12 @@
       "8250.nr_uarts=1" # configure mini uart https://forums.raspberrypi.com/viewtopic.php?t=246215
       "console=ttyS0,115200n8" #set console to output to uart1 (miniuart)
     ];
-    initrd.availableKernelModules = ["xhci_pci" "usbhid" "usb_storage"];
+    initrd.availableKernelModules = [
+      "xhci_pci" 
+      "usbhid" 
+      "usb_storage"
+      "libcomposite" # For OTG ethernet. See here: https://discourse.nixos.org/t/looking-for-help-to-create-a-raspberry-pi-with-usb-ethernet/27039
+      ];
     loader = {
       grub.enable = false;
       generic-extlinux-compatible.enable = true;
@@ -75,19 +80,41 @@
     swraid.enable = lib.mkForce false;
   };
 
-  networking = {
-    interfaces."wlan0".useDHCP = true;
-    wireless = {
-      enable = true;
-      interfaces = ["wlan0"];
-      # ! Change the following to connect to your own network
-      networks = {
-        "<ssid>" = {
-          psk = "<ssid-key>";
-        };
-      };
-    };
+  # networking = {
+  #   interfaces."wlan0".useDHCP = true;
+  #   wireless = {
+  #     enable = true;
+  #     interfaces = ["wlan0"];
+  #     # ! Change the following to connect to your own network
+  #     networks = {
+  #       "<ssid>" = {
+  #         psk = "<ssid-key>";
+  #       };
+  #     };
+  #   };
+  # };
+  
+  # enable OTG Ethernet
+  networking.dhcpcd.denyInterfaces = [ "usb0" ];
+
+  services.dhcpd4 = {
+    enable = true;
+    interfaces = [ "usb0" ];
+    extraConfig = ''
+      option domain-name "nixos";
+      option domain-name-servers 8.8.8.8, 8.8.4.4;
+      subnet 10.0.3.0 netmask 255.255.255.0 {
+        range 10.0.3.100 10.0.3.200;
+        option subnet-mask 255.255.255.0;
+        option broadcast-address 10.0.3.255;
+      }
+    '';
   };
+
+  networking.interfaces.usb0.ipv4.addresses = [{
+    address = "10.0.3.1";
+    prefixLength = 24;
+  }];
 
   # Enable OpenSSH out of the box.
   services.sshd.enable = true;
@@ -111,7 +138,6 @@
   };
   # ! Be sure to change the autologinUser.
   services.getty.autologinUser = "bob";
-  #services.samba.enable = lib.mkForce false;
 
   # disable zfs and cifs to prevent samba error when cross-compiling
   boot.supportedFilesystems.zfs = lib.mkForce false;

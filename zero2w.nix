@@ -151,7 +151,7 @@
   services.timesyncd.enable = true;
 
   # ! Change the following configuration
-  users.users.bob = {
+  users.users.admin = {
     isNormalUser = true;
     home = "/home/admin";
     description = "Admin";

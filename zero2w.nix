@@ -111,4 +111,9 @@
   };
   # ! Be sure to change the autologinUser.
   services.getty.autologinUser = "bob";
+  #services.samba.enable = lib.mkForce false;
+
+  # disable zfs and cifs to prevent samba error when cross-compiling
+  boot.supportedFilesystems.zfs = lib.mkForce false;
+  boot.supportedFilesystems.cifs = lib.mkForce false;
 }

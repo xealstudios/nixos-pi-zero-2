@@ -95,13 +95,13 @@
   # };
 
   # enable USB Ethernet  https://wiki.nixos.org/wiki/Internet_Connection_Sharing
-  networking.interfaces."usb0" = {
-    useDHCP = false;
-    ipv4.addresses = [{
-      address = "10.0.0.1";
-      prefixLength = 24;
-    }];
-  };
+  # networking.interfaces."usb0" = {
+  #   useDHCP = false;
+  #   ipv4.addresses = [{
+  #     address = "10.0.0.1";
+  #     prefixLength = 24;
+  #   }];
+  # };
   # networking.firewall.extraCommands = ''
   #   # Set up SNAT on packets going from downstream to the wider internet
   #   iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE

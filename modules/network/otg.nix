@@ -69,7 +69,7 @@ with lib;
 
     # make sure they're loaded when the pi boots
     boot.kernelModules = [
-      "dwc2" "${module.module}"
+      "dwc2" "g_ether" "${module.module}"
     ];
 
     boot.loader.raspberryPi.firmwareConfig = "dtoverlay=dwc2";

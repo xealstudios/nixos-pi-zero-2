@@ -69,9 +69,43 @@ with lib;
 
     # make sure they're loaded when the pi boots
     boot.kernelModules = [
-      "dwc2" "g_ether" "${module.module}"
+      "dwc2" "${module.module}"
     ];
 
     boot.loader.raspberryPi.firmwareConfig = "dtoverlay=dwc2";
+
+    # enable USB Ethernet  https://wiki.nixos.org/wiki/Internet_Connection_Sharing
+    networking.interfaces."usb0" = {
+      useDHCP = true;
+    };
+
+    # don't wait for the usb ethernet to connect
+    networking.dhcpcd.wait = "background";
+
+    # load usb0 in device mode in the device tree
+    hardware.deviceTree = {
+      enable = true;
+      filter = "bcm2837-rpi-zero-2-w.dtb";
+      overlays = [
+        {
+          name = "dwc2_usb";
+          dtsText = ''
+            /dts-v1/;
+            /plugin/;
+            / {
+              compatible = "raspberrypi,model-zero-2-w", "brcm,bcm2837";
+            };
+            &usb {
+                compatible = "brcm,bcm2835-usb";
+                dr_mode = "otg";
+                g-np-tx-fifo-size = <32>;
+                g-rx-fifo-size = <558>;
+                g-tx-fifo-size = <512 512 512 512 512 256 256>;
+                status = "okay";
+            };
+          '';
+        }
+      ];
+    };
   };
 }

@@ -39,6 +39,9 @@ nix run github:serokell/deploy-rs .#zero2w -- --ssh-user $SSH_USER --hostname $Z
 - I still couldn't find a way to use `boot.kernelPackages = pkgs.linuxKernel.packages.linux_rpi3`. 
 - the `sdImage.extraFirmwareConfig` option is not ideal as it cannot update `config.txt` after it is created in the sd image.
 
+## OTG ethernet
+OTG ethernet is enabled by default and will force usb into device mode. Disable OTG ethernet to use the usb port. 
+
 ## See also
 - [this issue](https://github.com/NixOS/nixpkgs/issues/216886)
 - [this gist](https://gist.github.com/plmercereau/0c8e6ed376dc77617a7231af319e3d29)

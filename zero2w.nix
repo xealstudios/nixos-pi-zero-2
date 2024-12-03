@@ -142,15 +142,6 @@
   # NTP time sync.
   services.timesyncd.enable = true;
 
-  # ! Change the following configuration
-  users.users.admin = {
-    isNormalUser = true;
-    home = "/home/admin";
-    description = "Admin";
-    extraGroups = ["wheel" "networkmanager"];
-    # ! Be sure to put your own public key here
-    openssh.authorizedKeys.keys = ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQD1kcnCJMRYEUf87W37Axq7mjqpxZv/MyIJX9m/WTnWns0lZ/QIwbuMdEnsAszoXllgIDFJdeH05Xzkcm0dnGp9JjWchh61vMdwGPAWbIFL5TBbeBpFiF67/BmXF9hzwnjXpoy7W/t810m2hm3s2AB35R608GUsw6QaByW74y71mz69GxADXZm6bRubF4STBLDr8xrVN8bCUt5LUPvLoWB6Oc8lPAXB/V7gynqRockM25M+B7xF1jg3QRJwnj75TAjnra9OtN+CdhhyhzOZt0xbU2LHAqnYq8OFrM7N5+pCHxWer7fYaN0GaKjq9uJTuUkiPyQRcVvEK1DMBulopTrawvh1nGa/xho2CWmFae6uTR0YUgzO+AJegg1Fso4D8YOD1avURfQsOY6U5nrkz49jVLtXpLAU7Xh8vibZgE9Wrpjlty3ieIHIia9eJd2B+9mAy6k+wY+Q3TuV3wQM2Lcia+KeLuPwfkII5hijl+JUl/VPRtCHaFUg0Pj5h2rIURDjO0SqZr7m/HmsHbdtg5lKxCcWDJaL6e3M0/3PbPBkH+nssnUpRu9laCa8ibjAzKdUorOPzUltaVkSwEaTk1kabaywGEqiZzUwsYfGhBqP6qzbyGmN7lBqCv3UvTJdbX5CJhYSWQWmPr4o/UgP80IJiqTsCmgvJ/r+Nv85sgqP4Q== bryanmehall@gmail.com"];
-  };
 
   security.sudo = {
     enable = true;

@@ -42,6 +42,9 @@ nix run github:serokell/deploy-rs .#zero2w -- --ssh-user $SSH_USER --hostname $Z
 ## OTG ethernet
 OTG ethernet is enabled by default and will force usb into device mode. Disable OTG ethernet to use the usb port. 
 
+## Serial Console
+The serial console is enabled by default and can be disabled 
+
 ## See also
 - [this issue](https://github.com/NixOS/nixpkgs/issues/216886)
 - [this gist](https://gist.github.com/plmercereau/0c8e6ed376dc77617a7231af319e3d29)

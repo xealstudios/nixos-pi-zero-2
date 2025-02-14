@@ -24,7 +24,7 @@
       description = lib.mdDoc ''
         Enable OTG ethrnet. This requires the usb port to be in client mode so it is disbaled by defualt. It can not be used with other devices that require the usb port to be in host mode.
       '';
-    }
+    };
   };
 
   config = {
@@ -53,6 +53,6 @@
     otg = {
       enable = true;
       module = "ether";
-    }
+    };
   };
 }

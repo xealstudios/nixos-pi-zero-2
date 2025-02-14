@@ -47,12 +47,14 @@
             chmod u-w $config
           ''
       );
+      boot = lib.mkIf config.sdImage.enableOtgEthernet {
+        otg = {
+          enable = true;
+          module = "ether";
+        };
+      };
+
   };
 
-  boot = lib.mkIf (config.sdImage.enableOtgEthernet) {
-    otg = {
-      enable = true;
-      module = "ether";
-    };
-  };
+  
 }

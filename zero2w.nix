@@ -6,7 +6,7 @@
 }: {
   imports = [
     ./sd-image.nix
-    ./modules/network/otg.nix
+    #./modules/network/otg.nix
   ];
 
   # Some packages (ahci fail... this bypasses that) https://discourse.nixos.org/t/does-pkgs-linuxpackages-rpi3-build-all-required-kernel-modules/42509

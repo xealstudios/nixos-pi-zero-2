@@ -6,6 +6,10 @@
   pkgs,
   ...
 }: {
+  imports = [
+    ./modules/network/otg.nix
+  ];
+
   options.sdImage = with lib; {
     extraFirmwareConfig = mkOption {
       type = types.attrs;
@@ -14,6 +18,13 @@
         Extra configuration to be added to config.txt.
       '';
     };
+    enableOtgEthernet = mkOption {
+      type = types.bool;
+      default = false;
+      description = lib.mdDoc ''
+        Enable OTG ethrnet. This requires the usb port to be in client mode so it is disbaled by defualt. It can not be used with other devices that require the usb port to be in host mode.
+      '';
+    }
   };
 
   config = {
@@ -36,5 +47,12 @@
             chmod u-w $config
           ''
       );
+  };
+
+  boot = lib.mkIf (config.sdImage.enableOtgEthernet) {
+    otg = {
+      enable = true;
+      module = "ether";
+    }
   };
 }
